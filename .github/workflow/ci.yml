@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    paths:
+      - 'infra/keda/**'
+      - 'services/**'
+      - 'schemas/**'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Validate KEDA Manifests
+        run: |
+          sudo apt-get update && sudo apt-get install -y yamllint
+          curl -sL https://github.com/instrumenta/kubeval/releases/latest/download/kubeval-linux-amd64.tar.gz | tar xz
+          sudo mv kubeval /usr/local/bin/
+          yamllint infra/keda/
+          kubeval infra/keda/
+
+      - name: Validate Event Schema
+        run: |
+          jq . schemas/eventgrid-order-event.json
