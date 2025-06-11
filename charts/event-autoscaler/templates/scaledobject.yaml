@@ -1,0 +1,19 @@
+{{- if .Values.keda.enabled }}
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: orders-scaler
+spec:
+  scaleTargetRef:
+    name: {{ .Release.Name }}-processor
+  pollingInterval: 30
+  cooldownPeriod: 300
+  minReplicaCount: 1
+  maxReplicaCount: 10
+  triggers:
+    - type: azure-queue
+      metadata:
+        queueName: orders-queue
+        connectionFromEnv: AZURE_STORAGE_CONNECTION_STRING
+        queueLength: "100"
+{{- end }}

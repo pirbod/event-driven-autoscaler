@@ -1,0 +1,26 @@
+{
+  "dashboard": {
+    "title": "KEDA Scaling Events",
+    "panels": [
+      {
+        "type": "graph",
+        "title": "Order Queue Depth",
+        "targets": [
+          {
+            "expr": "queue_length_metric",
+            "legendFormat": "Orders Queue"
+          }
+        ]
+      },
+      {
+        "type": "graph",
+        "title": "Pod Replica Count",
+        "targets": [
+          {
+            "expr": "kube_deployment_status_replicas{deployment='order-processor'}"
+          }
+        ]
+      }
+    ]
+  }
+}

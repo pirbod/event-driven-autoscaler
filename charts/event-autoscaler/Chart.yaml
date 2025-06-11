@@ -1,0 +1,4 @@
+apiVersion: v2
+name: event-autoscaler
+description: A Helm chart for deploying KEDA-based event-driven autoscaling
+version: 0.1.0
